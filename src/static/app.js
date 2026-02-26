@@ -4,44 +4,87 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
-  // Function to fetch activities from API
+  // ── Tab switching ────────────────────────────────────
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabPanels = document.querySelectorAll(".tab-panel");
+
+  function switchTab(tabId) {
+    tabBtns.forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tabId));
+    tabPanels.forEach(panel => panel.classList.toggle("active", panel.id === `tab-${tabId}`));
+  }
+
+  tabBtns.forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+
+  // ── Sport icons ──────────────────────────────────────
+  const sportIcons = {
+    "Alpine Skiing":  "⛷️",
+    "Figure Skating": "⛸️",
+    "Ice Hockey":     "🏒",
+    "Biathlon":       "🎯",
+    "Curling":        "🥌",
+    "Ski Jumping":    "🎿",
+    "Bobsled":        "🛷",
+    "Speed Skating":  "💨",
+    "Luge":           "🛷",
+    "Snowboard":      "🏂",
+  };
+
+  // ── Fetch & render activities ────────────────────────
   async function fetchActivities() {
     try {
       const response = await fetch("/activities");
       const activities = await response.json();
 
-      // Clear loading message
       activitiesList.innerHTML = "";
+      activitySelect.innerHTML = '<option value="" disabled selected></option>';
 
-      // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
-
         const spotsLeft = details.max_participants - details.participants.length;
+        const icon = sportIcons[name] || "🏅";
+        const full = spotsLeft <= 0;
 
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+        const card = document.createElement("div");
+        card.className = "activity-card" + (full ? " full" : "");
+        card.innerHTML = `
+          <div class="sport-icon">${icon}</div>
+          <div class="sport-info">
+            <h4>${name}</h4>
+            <p>${details.description}</p>
+            <p><strong>Schedule:</strong> ${details.schedule}</p>
+            <span class="spot-badge">${full ? "Full" : `${spotsLeft} spots left`}</span>
+          </div>
+          ${full ? "" : `<button class="card-signup-btn" data-sport="${name}">Sign Up →</button>`}
         `;
+        activitiesList.appendChild(card);
 
-        activitiesList.appendChild(activityCard);
-
-        // Add option to select dropdown
         const option = document.createElement("option");
         option.value = name;
         option.textContent = name;
+        if (full) option.disabled = true;
         activitySelect.appendChild(option);
       });
+
+      // Wire card sign-up shortcuts
+      activitiesList.querySelectorAll(".card-signup-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activitySelect.value = btn.dataset.sport;
+          activitySelect.classList.add("has-value");
+          switchTab("signup");
+          document.getElementById("email").focus();
+        });
+      });
+
+      // Track select value changes for floating label
+      activitySelect.addEventListener("change", () => {
+        activitySelect.classList.toggle("has-value", activitySelect.value !== "");
+      });
     } catch (error) {
-      activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
+      activitiesList.innerHTML = '<p class="loading">Failed to load activities. Please try again later.</p>';
       console.error("Error fetching activities:", error);
     }
   }
 
-  // Handle form submission
+  // ── Form submission ──────────────────────────────────
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -51,9 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const response = await fetch(
         `/activities/${encodeURIComponent(activity)}/signup?email=${encodeURIComponent(email)}`,
-        {
-          method: "POST",
-        }
+        { method: "POST" }
       );
 
       const result = await response.json();
@@ -62,17 +103,15 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        activitySelect.classList.remove("has-value");
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
       }
 
       messageDiv.classList.remove("hidden");
-
-      // Hide message after 5 seconds
-      setTimeout(() => {
-        messageDiv.classList.add("hidden");
-      }, 5000);
+      setTimeout(() => messageDiv.classList.add("hidden"), 5000);
     } catch (error) {
       messageDiv.textContent = "Failed to sign up. Please try again.";
       messageDiv.className = "error";
@@ -81,6 +120,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initialize app
   fetchActivities();
 });
