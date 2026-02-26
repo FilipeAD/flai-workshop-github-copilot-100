@@ -3,42 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mergington High School Activities</title>
+    <title>Mergington High School Winter Olympic Sports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header>
       <h1>Mergington High School</h1>
-      <h2>Extracurricular Activities</h2>
+      <h2>Winter Olympic Sports</h2>
     </header>
 
     <main>
-      <section id="activities-container">
-        <h3>Available Activities</h3>
-        <div id="activities-list">
-          <!-- Activities will be loaded here -->
-          <p>Loading activities...</p>
-        </div>
-      </section>
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="sports">🏅 Sports</button>
+        <button class="tab-btn" data-tab="signup">✍️ Sign Up</button>
+      </nav>
 
-      <section id="signup-container">
-        <h3>Sign Up for an Activity</h3>
-        <form id="signup-form">
-          <div class="form-group">
-            <label for="email">Student Email:</label>
-            <input type="email" id="email" required placeholder="your-email@mergington.edu" />
-          </div>
-          <div class="form-group">
-            <label for="activity">Select Activity:</label>
-            <select id="activity" required>
-              <option value="">-- Select an activity --</option>
-              <!-- Activity options will be loaded here -->
-            </select>
-          </div>
-          <button type="submit">Sign Up</button>
-        </form>
-        <div id="message" class="hidden"></div>
-      </section>
+      <div class="tab-panel active" id="tab-sports">
+        <div id="activities-list">
+          <p class="loading">Loading sports...</p>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-signup">
+        <div class="signup-wrapper">
+          <section id="signup-container">
+            <div class="form-hero">
+              <span class="form-hero-icon">🏅</span>
+              <div>
+                <h3>Join a Winter Sport</h3>
+                <p class="form-subtitle">Reserve your spot on the team. Limited places available.</p>
+              </div>
+            </div>
+
+            <form id="signup-form" autocomplete="off">
+              <div class="form-field">
+                <span class="field-icon">✉️</span>
+                <div class="field-inner">
+                  <input type="email" id="email" required placeholder=" " />
+                  <label for="email">Student Email</label>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <span class="field-icon">⛷️</span>
+                <div class="field-inner select-wrap">
+                  <select id="activity" required>
+                    <option value="" disabled selected></option>
+                  </select>
+                  <label for="activity" class="select-label">Select a Sport</label>
+                  <span class="select-arrow">▾</span>
+                </div>
+              </div>
+
+              <button type="submit">
+                <span class="btn-label">Reserve My Spot</span>
+                <span class="btn-icon">→</span>
+              </button>
+            </form>
+
+            <div id="message" class="hidden"></div>
+          </section>
+        </div>
+      </div>
     </main>
 
     <footer>

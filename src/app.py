@@ -19,64 +19,43 @@ current_dir    = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
-# In-memory activity database
+# In-memory winter olympic sports database
 activities = {
-    "Chess Club": {
-        "description": "Learn strategies and compete in chess tournaments",
-        "schedule": "Fridays, 3:30 PM - 5:00 PM",
-        "max_participants": 12,
+    "Alpine Skiing": {
+        "description": "Race down icy slopes at high speed in slalom, giant slalom, and downhill events",
+        "schedule": "Mondays and Wednesdays, 8:00 AM - 10:00 AM",
+        "max_participants": 20,
         "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
     },
-    "Programming Class": {
-        "description": "Learn programming fundamentals and build software projects",
-        "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
-        "max_participants": 20,
+    "Figure Skating": {
+        "description": "Perform artistic routines on ice combining jumps, spins, and choreography",
+        "schedule": "Tuesdays and Thursdays, 6:00 AM - 8:00 AM",
+        "max_participants": 16,
         "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
     },
-    "Gym Class": {
-        "description": "Physical education and sports activities",
-        "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
+    "Ice Hockey": {
+        "description": "Fast-paced team sport played on ice with sticks and a puck",
+        "schedule": "Mondays, Wednesdays, Fridays, 7:00 PM - 9:00 PM",
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
     },
-    # Sports activities
-    "Soccer Team": {
-        "description": "Join the school soccer team and compete in matches",
-        "schedule": "Wednesdays, 4:00 PM - 6:00 PM",
-        "max_participants": 18,
-        "participants": ["lucas@mergington.edu", "mia@mergington.edu"]
-    },
-    "Basketball Club": {
-        "description": "Practice basketball skills and play friendly games",
-        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+    "Biathlon": {
+        "description": "Combines cross-country skiing with rifle marksmanship",
+        "schedule": "Saturdays, 9:00 AM - 12:00 PM",
         "max_participants": 15,
-        "participants": ["noah@mergington.edu", "ava@mergington.edu"]
+        "participants": []
     },
-    # Artistic activities
-    "Art Workshop": {
-        "description": "Explore painting, drawing, and sculpture techniques",   
-        "schedule": "Thursdays, 4:00 PM - 5:30 PM",
-        "max_participants": 16,
-        "participants": ["liam@mergington.edu", "isabella@mergington.edu"]
+    "Curling": {
+        "description": "Strategic team sport where players slide stones on ice toward a target",
+        "schedule": "Fridays, 4:00 PM - 6:00 PM",
+        "max_participants": 24,
+        "participants": ["lucas@mergington.edu"]
     },
-    "Drama Club": {
-        "description": "Act, direct, and produce school plays and performances",
-        "schedule": "Tuesdays, 5:00 PM - 6:30 PM",
-        "max_participants": 20,
-        "participants": ["elijah@mergington.edu", "charlotte@mergington.edu"]
-    },
-    # Intellectual activities
-    "Math Olympiad": {
-        "description": "Prepare for math competitions and solve challenging problems",
-        "schedule": "Fridays, 4:00 PM - 5:30 PM",
-        "max_participants": 10,
-        "participants": ["benjamin@mergington.edu", "amelia@mergington.edu"]
-    },
-    "Science Club": {
-        "description": "Conduct experiments and explore scientific topics",
-        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
-        "max_participants": 14,
-        "participants": ["ethan@mergington.edu", "grace@mergington.edu"]
+    "Ski Jumping": {
+        "description": "Athletes ski down a ramp and launch into the air aiming for maximum distance",
+        "schedule": "Thursdays, 3:00 PM - 5:00 PM",
+        "max_participants": 12,
+        "participants": []
     }
 }
 
